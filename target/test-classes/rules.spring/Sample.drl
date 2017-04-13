@@ -1,0 +1,134 @@
+package com.sampleter.securitystack.example  
+   
+import com.sample.Student;
+import com.sample.School;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Iterator;
+import java.util.List;
+
+
+
+
+
+
+rule "activation1" 
+    //salience 2
+    activation-group "test01"
+	agenda-group "test01"
+	auto-focus true
+	no-loop true
+	when
+	then
+	System.out.println("test01   id:"+Thread.currentThread().getId()+"---------name:"+Thread.currentThread().getName());
+end
+
+
+rule "activation2" 
+	//salience 1
+	activation-group "test01"
+	agenda-group "test01"
+	auto-focus true
+	no-loop true
+	when
+	then
+	System.out.println("test02   id:"+Thread.currentThread().getId()+"---------name:"+Thread.currentThread().getName());
+end
+
+
+
+
+//遍历map
+rule "Hello World" 
+    when  
+    //判断status是否与常量Message.HELLO相同   赋值message到myMessage 
+       // System.out.println( "rule 'Hello World'  的when  status"+status ); 
+       //when不允许使用 System.out.println语句
+        s:Student( sex == "f" && age == 10 && map.size>0 ,factMap: map)  
+    then  
+        //输出myMessage  
+        //Map<String,School> map = s.getMap();
+        System.out.println("----------------");
+        System.out.println( s.getName() ); 
+        System.out.println( s.getAge() ); 
+        System.out.println( s.getSex() ); 
+        Iterator iterator = factMap.entrySet().iterator();
+        System.out.println(iterator);
+        System.out.println("----------------");
+        while (iterator.hasNext()) {
+              Entry entry =  (Entry) iterator.next();
+        	  System.out.println(entry.getKey());
+        	  School school = (School)entry.getValue();
+        	  System.out.println(school.getName());
+        	  System.out.println(school.getAddr());
+        }
+        //更改Message  
+        s.setName( "流量" );  
+        s.setAge( 20 );  
+        //更改后继续执行规则  
+        update(s);  
+        Student s1 = new Student();
+        s1.setName( "流量3333" );  
+        s1.setAge( 200 );  
+        insert(s1);
+end 
+  
+/*rule "test list "
+
+	when
+		s:Student()
+		studentList.c
+	then
+        System.out.println( s.getName() ); 
+        System.out.println( s.getAge() ); 
+        System.out.println( s.getSex() ); 
+end
+*/
+/*rule "test hong2"
+	salience 2
+	no-loop true
+	when
+		
+	then
+  		Student student = new Student();
+  		student.setName("大王");
+        student.setAge(9);
+        student.setSex("f");
+        insert(student);
+        System.out.println( "-----------------test hong2--------------------" ); 
+        System.out.println( student.getName() ); 
+        System.out.println( student.getAge() ); 
+        System.out.println( student.getSex() ); 
+end
+
+rule "test hong1"
+	salience 1
+	no-loop true
+	when
+		s:Student(name=="大王",age<10);
+	then
+	System.out.println( "-----------------test hong1--------------------" ); 
+        s.setAge(s.getAge()+1);
+        update(s);
+        System.out.println( s.getName() ); 
+        System.out.println( s.getAge() ); 
+        System.out.println( s.getSex() ); 
+end
+*/     
+/*rule "GoodBye"  
+    when  
+     //判断status是否与常量Message.GOODBYE相同   赋值message到myMessage 
+        s:Student( age == 200)  
+        s1:Student( age == 20)  
+    then  
+    //输出myMessage  
+        System.out.println( "------------------------------------" );
+        System.out.println( s.getName() ); 
+        System.out.println( s.getAge() ); 
+        System.out.println( s.getSex() ); 
+        System.out.println( "---------------------" );
+        System.out.println( s1.getName() ); 
+        System.out.println( s1.getAge() ); 
+        System.out.println( s1.getSex() ); 
+end*/ 
